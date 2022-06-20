@@ -54,6 +54,10 @@ jobs:
         run: terraform init -input=false
         shell: pwsh
         working-directory: env/dev
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_IN_AUTOMATION: true
 
       # - name: Terraform Init
       #   uses: hashicorp/terraform-github-actions/init@v0.4.0
@@ -62,15 +66,14 @@ jobs:
       #     TF_ACTION_WORKING_DIR: 'env/dev'
       #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
       #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}      
-
+  
 
       # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
       # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
       - name: "Run - Terraform Plan"
         id: plan
         run: terraform plan -input=false -no-color
-        working-directory: env/dev
-        
+        working-directory: env/dev        
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
