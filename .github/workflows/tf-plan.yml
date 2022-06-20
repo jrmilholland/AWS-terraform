@@ -68,7 +68,7 @@ jobs:
       # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
       - name: "Run - Terraform Plan"
         id: plan
-        run: terraform plan -input=false -no-color
+        run: terraform plan -input=false
         working-directory: env/dev             
 
       # # Submit a comment with the plan output to the pull request
