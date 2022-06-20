@@ -1,20 +1,19 @@
 terraform {
+  required_version = ">= 1.2.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.0"      
-      region  = "us-west-2"
+      version = "~> 4.0"
     }
   }
 
-  backend "s3" {
+  backend "S3" {
     bucket  = "jm-terraform-state-demo"
     key     = "dev/us-west-2/terraform.tfstate"
     region  = "us-west-2"
     encrypt = true
   }
-
-  required_version = ">= 1.2.0"
 }
 
 provider "aws" {
