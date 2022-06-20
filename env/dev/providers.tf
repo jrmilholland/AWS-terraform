@@ -8,7 +8,7 @@ terraform {
     }
   }
 
-  backend "S3" {
+  backend "s3" {
     bucket  = "jm-terraform-state-demo"
     key     = "dev/us-west-2/terraform.tfstate"
     region  = "us-west-2"
