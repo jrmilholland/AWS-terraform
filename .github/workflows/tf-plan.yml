@@ -20,8 +20,8 @@ jobs:
     steps:
       # Checkout the code
       # Marketplace: https://github.com/marketplace/actions/checkout
-      - name: "Setup - Checkout"
-        uses: actions/checkout@v2.1.0
+      # - name: "Setup - Checkout"
+      #   uses: actions/checkout@v2.1.0
 
       # Static analysis of Terraform templates to spot potential security issues
       # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
