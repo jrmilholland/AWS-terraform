@@ -17,10 +17,6 @@ jobs:
       - name: "Setup - Checkout"
         uses: actions/checkout@v2.1.0
 
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.2.3
-
       # Static analysis of Terraform templates to spot potential security issues
       # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
       # - name: "Setup - Security Scan"
@@ -48,16 +44,16 @@ jobs:
       #   uses: hashicorp/setup-terraform@v1.0.1
 
       # Init pulls credentials from the .aws/credentials file by default
-      # - name: "Run - Terraform Init"
-      #   run: terraform init -input=false
+      - name: "Run - Terraform Init"
+        run: terraform init -input=false
 
-      - name: Terraform Init
-        uses: hashicorp/terraform-github-actions/init@v0.4.0
-        env:
-        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TF_ACTION_WORKING_DIR: 'env/dev'
-          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}      
+      # - name: Terraform Init
+      #   uses: hashicorp/terraform-github-actions/init@v0.4.0
+      #   env:
+      #   # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     TF_ACTION_WORKING_DIR: 'env/dev'
+      #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}      
 
 
       # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
