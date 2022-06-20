@@ -7,10 +7,10 @@
 #   }
 # }
 
-# resource "aws_s3_bucket" "tf_course" {
+resource "aws_s3_bucket" "tf_course" {
 
-#   bucket = "hella-buckets-of-fun-some-new-name-buh"
-# }
+  bucket = "hella-buckets-of-fun-some-new-name-buh"
+}
 
 # resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
 #   name = "terraform-state-lock-dynamo"

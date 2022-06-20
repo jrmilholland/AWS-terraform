@@ -40,9 +40,18 @@ jobs:
           echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
       
+      - name: Setup Terraform    
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.3
+
+      - name: "Terraform Format"
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
     
       # Downloads a specific version of Terraform CLI and adds it to PATH
       # Marketplace: https://github.com/marketplace/actions/hashicorp-setup-terraform
@@ -50,7 +59,7 @@ jobs:
       #   uses: hashicorp/setup-terraform@v1.0.1
 
       # Init pulls credentials from the .aws/credentials file by default
-      - name: "Run - Terraform Init"
+      - name: "Terraform Init"
         run: terraform init -input=false
         shell: pwsh
         working-directory: env/dev      
@@ -66,7 +75,7 @@ jobs:
 
       # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
       # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
-      - name: "Run - Terraform Plan"
+      - name: "Terraform Plan"
         id: plan
         run: terraform plan -input=false
         working-directory: env/dev             
@@ -85,6 +94,9 @@ jobs:
       #         body: process.env.STDOUT
       #       })
 
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
       
       - name: Terraform apply
         id: apply
