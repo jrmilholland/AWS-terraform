@@ -63,6 +63,7 @@ jobs:
       - name: "Run - Terraform Plan"
         id: plan
         run: terraform plan -input=false -no-color
+        working-directory: env/dev
 
       # Submit a comment with the plan output to the pull request
       - name: "Run - Terraform Comment"
