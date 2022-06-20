@@ -17,6 +17,10 @@ jobs:
       - name: "Setup - Checkout"
         uses: actions/checkout@v2.1.0
 
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.2.3
+
       # Static analysis of Terraform templates to spot potential security issues
       # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
       # - name: "Setup - Security Scan"
