@@ -40,7 +40,7 @@ jobs:
           echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
       
-      - name: Setup Terraform    
+      - name: "Setup Terraform"   
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.2.3
@@ -51,7 +51,7 @@ jobs:
       #   uses: hashicorp/setup-terraform@v1.0.1
 
       # Init pulls credentials from the .aws/credentials file by default
-      - name: "Terraform Init"
+      - name: "Run - Terraform Init"
         run: terraform init -input=false
         shell: pwsh
         working-directory: env/dev      
@@ -67,7 +67,7 @@ jobs:
 
       # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
       # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
-      - name: "Terraform Plan"
+      - name: "Run - Terraform Plan"
         id: plan
         run: terraform plan -input=false
         working-directory: env/dev             
