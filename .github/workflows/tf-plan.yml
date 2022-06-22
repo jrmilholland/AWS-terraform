@@ -1,98 +1,98 @@
-# name: "Terraform Plan"
+name: "Terraform Plan"
 
-# # Trigger when a pull request is received
-# on:
-#   push:
-#     branches:
-#       - main
-# #  pull_request:
+# Trigger when a pull request is received
+on:
+  push:
+    branches:
+      - main
+#  pull_request:
 
-# jobs:
-#   terraform-plan:
-#     name: "Terraform Plan"
-#     runs-on: ubuntu-latest
+jobs:
+  terraform-plan:
+    name: "Terraform Plan"
+    runs-on: ubuntu-latest
 
-#     # env:
-#     #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#     #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#     #   TF_IN_AUTOMATION: true
+    # env:
+    #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #   TF_IN_AUTOMATION: true
 
-#     steps:
-#       # Checkout the code
-#       # Marketplace: https://github.com/marketplace/actions/checkout
-#       - name: "Setup - Checkout"
-#         uses: actions/checkout@v2.1.0
+    steps:
+      # Checkout the code
+      # Marketplace: https://github.com/marketplace/actions/checkout
+      - name: "Setup - Checkout"
+        uses: actions/checkout@v2.1.0
 
-#       # Static analysis of Terraform templates to spot potential security issues
-#       # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
-#       # - name: "Setup - Security Scan"
-#       #   uses: triat/terraform-security-scan@v1
-#       #   env:
-#       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Static analysis of Terraform templates to spot potential security issues
+      # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
+      # - name: "Setup - Security Scan"
+      #   uses: triat/terraform-security-scan@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#       # Provides AWS credentials to Terraform
-#       # By default, Terraform checks the home directory for a .aws folder with a credential file
-#       # Documentation: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html
-#       - name: "Setup - Build AWS Credentials"
-#         run: |
-#           mkdir -p ~/.aws
-#           echo "[default]" > ~/.aws/credentials
-#           echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
-#           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+      # Provides AWS credentials to Terraform
+      # By default, Terraform checks the home directory for a .aws folder with a credential file
+      # Documentation: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html
+      - name: "Setup - Build AWS Credentials"
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
       
-#       - uses: hashicorp/setup-terraform@v2
-#         with:
-#           terraform_version: 1.2.3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.2.3
     
-#       # Downloads a specific version of Terraform CLI and adds it to PATH
-#       # Marketplace: https://github.com/marketplace/actions/hashicorp-setup-terraform
-#       # - name: "Setup - Terraform CLI"
-#       #   uses: hashicorp/setup-terraform@v1.0.1
+      # Downloads a specific version of Terraform CLI and adds it to PATH
+      # Marketplace: https://github.com/marketplace/actions/hashicorp-setup-terraform
+      # - name: "Setup - Terraform CLI"
+      #   uses: hashicorp/setup-terraform@v1.0.1
 
-#       # Init pulls credentials from the .aws/credentials file by default
-#       - name: "Terraform Init"
-#         run: terraform init -input=false
-#         shell: pwsh
-#         working-directory: env/dev      
+      # Init pulls credentials from the .aws/credentials file by default
+      - name: "Terraform Init"
+        run: terraform init -input=false
+        shell: pwsh
+        working-directory: env/dev      
 
-#       # - name: Terraform Init
-#       #   uses: hashicorp/terraform-github-actions/init@v0.4.0
-#       #   env:
-#       #   # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       #     TF_ACTION_WORKING_DIR: 'env/dev'
-#       #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-#       #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}      
+      # - name: Terraform Init
+      #   uses: hashicorp/terraform-github-actions/init@v0.4.0
+      #   env:
+      #   # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     TF_ACTION_WORKING_DIR: 'env/dev'
+      #     AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}      
   
 
-#       # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
-#       # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
-#       - name: "Terraform Plan"
-#         id: plan
-#         run: terraform plan -input=false
-#         working-directory: env/dev             
+      # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
+      # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
+      - name: "Terraform Plan"
+        id: plan
+        run: terraform plan -input=false
+        working-directory: env/dev             
 
-#       # # Submit a comment with the plan output to the pull request
-#       # - name: "Run - Terraform Comment"
-#       #   uses: actions/github-script@0.9.0
-#       #   env:
-#       #     STDOUT: "```${{ steps.plan.outputs.stdout }}```"
-#       #   with:
-#       #     github-token: ${{ secrets.GITHUB_TOKEN }}
-#       #     script: |
-#       #       github.issues.createComment({
-#       #         owner: context.repo.owner,
-#       #         repo: context.repo.repo,
-#       #         body: process.env.STDOUT
-#       #       })
+      # # Submit a comment with the plan output to the pull request
+      # - name: "Run - Terraform Comment"
+      #   uses: actions/github-script@0.9.0
+      #   env:
+      #     STDOUT: "```${{ steps.plan.outputs.stdout }}```"
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       github.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: process.env.STDOUT
+      #       })
 
-#       # - name: Terraform Plan Status
-#       #   if: steps.plan.outcome == 'failure'
-#       #   run: exit 1
+      # - name: Terraform Plan Status
+      #   if: steps.plan.outcome == 'failure'
+      #   run: exit 1
       
-#       - name: Terraform apply
-#         id: apply
-#         if: github.ref == 'refs/heads/main' &&  (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-#         run: terraform apply -auto-approve -input=false
-#         working-directory: env/dev 
-#         # env:
-#         #   TF_VAR_assume_role: "my-github-actions-role"
+      - name: Terraform apply
+        id: apply
+        if: github.ref == 'refs/heads/main' &&  (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        run: terraform apply -auto-approve -input=false
+        working-directory: env/dev 
+        # env:
+        #   TF_VAR_assume_role: "my-github-actions-role"
