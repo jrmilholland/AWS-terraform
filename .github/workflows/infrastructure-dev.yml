@@ -36,13 +36,16 @@ jobs:
         terraform_additional_arguments: ""
     
   terraform-apply:
-    environment: Dev
+    needs: terraform-plan
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')    
+    environment: Dev-Infra
+    concurrency: Dev-Infra
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Terraform Plan
+    - name: Terraform Apply
       uses: ./.github/actions/tf-apply
       with:
         aws_access_key_id: ${{ env.AWS_ACCESS_KEY_ID }}
