@@ -37,9 +37,9 @@ runs:
     - name: "Terraform Init"
       run: terraform init -input=false
       shell: pwsh
-      working-directory: env/${{inputs.terraform_version}}
+      working-directory: env/${{inputs.terraform_environment}}
 
     - name: "Terraform Plan"
       shell: pwsh
       run: terraform plan -no-color -input=false ${{ inputs.terraform_additional_arguments }}
-      working-directory: env/${{inputs.terraform_version}}
+      working-directory: env/${{inputs.terraform_environment}}
