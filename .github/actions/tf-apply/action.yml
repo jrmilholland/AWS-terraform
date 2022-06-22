@@ -1,0 +1,47 @@
+name: "Terraform Plan and Apply"
+description: Create a terraform plan to review.
+inputs:
+  aws_access_key_id:
+    description: The aws access key
+    required : true
+  aws_secret_access_key:
+    description: The aws secret access key
+    required : true
+  terraform_environment:
+    description: The environment folder name that contains the root of the terraform to plan.
+    required : true
+  terraform_version:
+    description: The version of terraform to use
+    required : true
+  terraform_additional_arguments:
+    description: Additional arguments that should be appended to the terraform plan
+    required: false
+
+runs: 
+  using: "composite"
+  steps:
+    - name: "Setup - Checkout"
+      uses: actions/checkout@v2.1.0
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+    
+    - name: "Setup - Build AWS Credentials"
+      shell: pwsh
+      run: |
+        mkdir -p ~/.aws
+        echo "[default]" > ~/.aws/credentials
+        echo "aws_access_key_id = ${{ inputs.aws_access_key_id }}" >> ~/.aws/credentials
+        echo "aws_secret_access_key = ${{ inputs.aws_secret_access_key }}" >> ~/.aws/credentials
+  
+    # Init pulls credentials from the .aws/credentials file by default
+    - name: "Terraform Init"
+      run: terraform init -input=false
+      shell: pwsh
+      working-directory: env/${inputs.terraform_version}
+
+    - name: "Terraform apply"
+      shell: pwsh
+      id: apply
+      if: github.ref == 'refs/heads/main' &&  (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+      run: terraform apply -auto-approve -input=false
+      working-directory: env/${inputs.terraform_version} 

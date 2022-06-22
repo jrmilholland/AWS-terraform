@@ -23,3 +23,47 @@ resource "aws_s3_bucket" "tf_course" {
 #     type = "S"
 #   }
 # }
+
+## s3 state bucket
+# resource "aws_s3_bucket" "terraform_state" {
+#   bucket = "terraform-up-and-running-state"
+#   # Enable versioning so we can see the full revision history of our
+#   # state files
+#   versioning {
+#     enabled = true
+#   }
+#   # Enable server-side encryption by default
+#   server_side_encryption_configuration {
+#     rule {
+#       apply_server_side_encryption_by_default {
+#         sse_algorithm = "AES256"
+#       }
+#     }
+#   }
+# }
+
+# resource "aws_s3_bucket" "s3Bucket" {
+#      bucket = "[BUCKET_NAME_HERE]"
+#      acl       = "public-read"
+
+#      policy  = <<EOF
+# {
+#      "id" : "MakePublic",
+#    "version" : "2012-10-17",
+#    "statement" : [
+#       {
+#          "action" : [
+#              "s3:GetObject"
+#           ],
+#          "effect" : "Allow",
+#          "resource" : "arn:aws:s3:::[BUCKET_NAME_HERE]/*",
+#          "principal" : "*"
+#       }
+#     ]
+#   }
+# EOF
+
+#    website {
+#        index_document = "index.html"
+#    }
+# }
