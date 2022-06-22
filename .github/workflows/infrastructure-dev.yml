@@ -7,7 +7,8 @@ on:
       - 'env/dev/**'
       - 'modules/**'
       - '.github/workflows/infrastructure-dev.yml'
-  workflow_dispatch:  
+  pull_request:
+  workflow_dispatch:
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
